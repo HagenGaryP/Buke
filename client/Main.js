@@ -1,44 +1,45 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 import AllAlbums from './AllAlbums';
+import SingleAlbum from './SingleAlbum';
 import Player from './Player';
-
-const state = {
-  albums: [
-    {
-      "id": 1,
-      "name": "No Dummy",
-      "artworkUrl": "default-album.jpg",
-      "artistId": 1,
-      "artist": {
-        "id": 1,
-        "name": "The Crash Test Dummies"
-      }
-    },
-    {
-      "id": 2,
-      "name": "I React to State",
-      "artworkUrl": "default-album.jpg",
-      "artistId": 1,
-      "artist": {
-        "id": 1,
-        "name": "The Crash Test Dummies"
-      }
-    }
-  ]
-}
+import axios from 'axios';
 
 export default class Main extends React.Component {
-  // constructor() {
+  constructor() {
+    super();
+    this.state = {
+      albums: [],
+      selectedAlbum: {}
+    }
+    // this.albumSelector = this.albumSelector.bind(this);
+  }
 
-  //   this.state = {
-  //     albums: []
-  //   }
-  // }
+  async componentDidMount() {
+    console.log('MOUNTEDDDDDD!!!')
+    try {
+      const response = await axios.get('/api/albums')
+      const albums = response.data;
+      this.setState({
+        albums: albums
+      })
+    } catch (error) {
+      console.log('did not mount! err = ', error);
+    }
+  }
 
-  // componentDidMount() {
-
-  // }
+  async albumSelector(id) {
+    try {
+      const response = await axios.get(`/api/albums/${id}`);
+      const selectedAlbum = response.data;
+      console.log('this is the selectedAlbummmmm >>> ', selectedAlbum)
+      this.setState({
+        selectedAlbum
+      })
+    } catch (error) {
+      console.log('error with album selection ', error);
+    }
+  }
 
   render () {
     return (
@@ -47,7 +48,15 @@ export default class Main extends React.Component {
         <Sidebar />
 
         <div className='container'>
-          <AllAlbums albums={state.albums} />
+        {
+          this.state.selectedAlbum.id ?
+            <SingleAlbum album={this.state.selectedAlbum} /> :
+            <AllAlbums
+              albums={this.state.albums}
+              albumSelector={this.albumSelector}
+            />
+        }
+
         </div>
 
         <Player />
@@ -56,3 +65,26 @@ export default class Main extends React.Component {
     )
   }
 }
+
+// const albums = [
+//   {
+//     "id": 1,
+//     "name": "No Dummy",
+//     "artworkUrl": "default-album.jpg",
+//     "artistId": 1,
+//     "artist": {
+//       "id": 1,
+//       "name": "The Crash Test Dummies"
+//     }
+//   },
+//   {
+//     "id": 2,
+//     "name": "I React to State",
+//     "artworkUrl": "default-album.jpg",
+//     "artistId": 1,
+//     "artist": {
+//       "id": 1,
+//       "name": "The Crash Test Dummies"
+//     }
+//   }
+// ];
