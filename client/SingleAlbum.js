@@ -4,6 +4,8 @@ const SingleAlbum = (props) => {
 
   const { album } = props;
 
+  console.log('single album >>> ', album)
+
   return (
     <div className="album">
       <a>

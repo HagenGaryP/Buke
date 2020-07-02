@@ -12,7 +12,7 @@ export default class Main extends React.Component {
       albums: [],
       selectedAlbum: {}
     }
-    // this.albumSelector = this.albumSelector.bind(this);
+    this.albumSelector = this.albumSelector.bind(this);
   }
 
   async componentDidMount() {
@@ -28,14 +28,12 @@ export default class Main extends React.Component {
     }
   }
 
-  async albumSelector(id) {
+  async albumSelector(albumId) {
     try {
-      const response = await axios.get(`/api/albums/${id}`);
+      const response = await axios.get(`/api/albums/${albumId}`);
       const selectedAlbum = response.data;
       console.log('this is the selectedAlbummmmm >>> ', selectedAlbum)
-      this.setState({
-        selectedAlbum
-      })
+      this.setState({selectedAlbum: selectedAlbum})
     } catch (error) {
       console.log('error with album selection ', error);
     }
