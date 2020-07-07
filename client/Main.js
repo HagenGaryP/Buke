@@ -14,6 +14,7 @@ export default class Main extends React.Component {
     }
     this.albumSelector = this.albumSelector.bind(this);
     this.reset = this.reset.bind(this);
+    this.start = this.start.bind(this);
   }
 
   async componentDidMount() {
@@ -34,20 +35,25 @@ export default class Main extends React.Component {
     try {
       const response = await axios.get(`/api/albums/${albumId}`);
       const selectedAlbum = response.data;
-      console.log('this is the selectedAlbummmmm >>> ', selectedAlbum)
       this.setState({
-        // albums: this.state.albums,
         selectedAlbum: selectedAlbum,
       })
     } catch (error) {
       console.log('error with album selection ', error);
     }
-    // console.log('ablumselector albums >>> ', this.state.albums)
   }
 
   reset() {
-    console.log('reset albums >>> ', this.state.albums)
     this.setState({ selectedAlbum: {} });
+  }
+
+  start() {
+    const audio = document.createElement('audio');
+    audio.src = 'https://learndotresources.s3.amazonaws.com/workshop/5616dbe5a561920300b10cd7/Dexter_Britain_-_03_-_The_Stars_Are_Out_Interlude.mp3';
+    audio.load();
+    audio.play();
+    // for now, reload the page if you want to stop the music
+
   }
 
   render () {
@@ -59,7 +65,10 @@ export default class Main extends React.Component {
         <div className='container'>
         {
           this.state.selectedAlbum.id ?
-            <SingleAlbum album={this.state.selectedAlbum} /> :
+            <SingleAlbum
+              album={this.state.selectedAlbum}
+              play={this.start}
+            /> :
             <AllAlbums
               albums={this.state.albums}
               albumSelector={this.albumSelector}
@@ -68,7 +77,7 @@ export default class Main extends React.Component {
 
         </div>
 
-        <Player />
+        <Player play={this.start} />
 
       </div>
     )

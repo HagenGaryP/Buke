@@ -1,4 +1,5 @@
 import React from 'react';
+import Songs from './Songs';
 
 const SingleAlbum = (props) => {
 
@@ -13,6 +14,7 @@ const SingleAlbum = (props) => {
         <p>{album.name}</p>
         <small>{album.artist.name}</small>
       </a>
+      <Songs album={album} songs={album.songs} play={props.play} />
     </div>
   )
 }
