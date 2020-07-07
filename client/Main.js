@@ -13,6 +13,7 @@ export default class Main extends React.Component {
       selectedAlbum: {}
     }
     this.albumSelector = this.albumSelector.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   async componentDidMount() {
@@ -29,21 +30,31 @@ export default class Main extends React.Component {
   }
 
   async albumSelector(albumId) {
+
     try {
       const response = await axios.get(`/api/albums/${albumId}`);
       const selectedAlbum = response.data;
       console.log('this is the selectedAlbummmmm >>> ', selectedAlbum)
-      this.setState({selectedAlbum: selectedAlbum})
+      this.setState({
+        // albums: this.state.albums,
+        selectedAlbum: selectedAlbum,
+      })
     } catch (error) {
       console.log('error with album selection ', error);
     }
+    // console.log('ablumselector albums >>> ', this.state.albums)
+  }
+
+  reset() {
+    console.log('reset albums >>> ', this.state.albums)
+    this.setState({ selectedAlbum: {} });
   }
 
   render () {
     return (
       <div id='main' className='row container'>
 
-        <Sidebar />
+        <Sidebar reset={this.reset} />
 
         <div className='container'>
         {

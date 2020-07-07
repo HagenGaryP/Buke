@@ -1,14 +1,13 @@
 import React from 'react'
 
 const Sidebar = (props) => {
-  // maybe some sort destructuring from props?
 
   return (
     <div id='sidebar'>
       <img src='juke.svg' id='logo' />
       <section>
         <h4>
-          <a>ALBUMS</a>
+          <a onClick={props.reset}>ALBUMS</a>
         </h4>
       </section>
     </div>
